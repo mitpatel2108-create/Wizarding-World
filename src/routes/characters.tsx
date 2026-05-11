@@ -8,6 +8,14 @@ import deputyImg from "@/assets/char-deputy.jpg";
 import potionsImg from "@/assets/char-potions.jpg";
 import keeperImg from "@/assets/char-keeper.jpg";
 import dreamerImg from "@/assets/char-dreamer.jpg";
+import harryImg from "@/assets/char-harry.jpg";
+import hermioneImg from "@/assets/char-hermione.jpg";
+import ronImg from "@/assets/char-ron.jpg";
+import voldemortImg from "@/assets/char-voldemort.jpg";
+import bellatrixImg from "@/assets/char-belltrix.jpg";
+import siriusImg from "@/assets/char-sirius.jpg";
+import dracoImg from "@/assets/char-draco.jpg";
+import dobbyImg from "@/assets/char-dobby.jpg";
 
 export const Route = createFileRoute("/characters")({
   head: () => ({
@@ -24,26 +32,101 @@ export const Route = createFileRoute("/characters")({
 interface Character { name: string; role: string; house: string; image: string; quote: string; bio: string; glow: string; }
 
 const CHARACTERS: Character[] = [
-  { name: "The Headmaster", role: "Sorcerer Supreme of the Castle", house: "Gryffindor", image: headmasterImg,
+  { name: "The Headmaster - Albus Dumbledore", role: "Sorcerer Supreme of the Castle", house: "Gryffindor", image: headmasterImg,
     quote: "It does not do to dwell on dreams and forget to live.",
     bio: "Half-moon spectacles, silver beard, and eyes that have read every chapter you have not yet written.",
     glow: "oklch(0.70 0.18 240)" },
-  { name: "The Deputy", role: "Mistress of Transfiguration", house: "Gryffindor", image: deputyImg,
+  { name: "The Deputy - Minerva McGonagall", role: "Mistress of Transfiguration", house: "Gryffindor", image: deputyImg,
     quote: "There will be no foolish wand-waving here.",
     bio: "A stern witch in emerald, who can become a tabby cat between two heartbeats.",
     glow: "oklch(0.65 0.18 160)" },
-  { name: "The Potions Master", role: "Keeper of the Dungeons", house: "Slytherin", image: potionsImg,
+  { name: "The Potions Master - Professor Severus Snape", role: "Keeper of the Dungeons", house: "Slytherin", image: potionsImg,
     quote: "I can teach you how to bottle fame, brew glory, and stopper death.",
     bio: "A man of long shadows and longer silences. His cauldron forgives no one.",
     glow: "oklch(0.55 0.20 25)" },
-  { name: "The Keeper of Keys", role: "Gamekeeper of the Forbidden Forest", house: "Gryffindor", image: keeperImg,
+  { name: "The Keeper of Keys - Rubeus Hagrid", role: "Gamekeeper of the Forbidden Forest", house: "Gryffindor", image: keeperImg,
     quote: "Yer a wizard.",
     bio: "Half-giant, all heart. Knows every creature in the forest by their first whisper.",
     glow: "oklch(0.68 0.16 60)" },
-  { name: "The Dreamer", role: "Reader of Invisible Things", house: "Ravenclaw", image: dreamerImg,
+  {
+    name: "Harry Potter",
+    role: "The Boy Who Lived",
+    house: "Gryffindor",
+    image: harryImg,
+    quote: "I don't go looking for trouble. Trouble usually finds me.",
+    bio: "The chosen wizard whose courage changed the fate of the wizarding world forever.",
+    glow: "oklch(0.72 0.18 210)",
+  },
+  {
+    name: "Hermione Granger",
+    role: "Brightest Witch of Her Age",
+    house: "Gryffindor",
+    image: hermioneImg,
+    quote: "Books! And cleverness! There are more important things.",
+    bio: "A brilliant witch whose intelligence and loyalty saved her friends countless times.",
+    glow: "oklch(0.75 0.15 50)",
+  },
+  {
+    name: "Ron Weasley",
+    role: "Loyal Knight of Gryffindor",
+    house: "Gryffindor",
+    image: ronImg,
+    quote: "Don't let the muggles get you down.",
+    bio: "Harry's fearless best friend with unmatched loyalty and heart.",
+    glow: "oklch(0.73 0.19 35)",
+  },
+  { name: "The Dreamer - Luna Lovegood", role: "Reader of Invisible Things", house: "Ravenclaw", image: dreamerImg,
     quote: "Things we lose have a way of coming back to us in the end.",
     bio: "Wears radish earrings and walks barefoot. Sees the creatures no one else can.",
     glow: "oklch(0.78 0.13 80)" },
+  {
+    name: "Draco Malfoy",
+    role: "Heir of the Malfoy Family",
+    house: "Slytherin",
+    image: dracoImg,
+    quote: "My father will hear about this.",
+    bio: "A proud pure-blood wizard torn between fear, family, and destiny.",
+    glow: "oklch(0.68 0.14 120)",
+  },
+  {
+    name: "Lord Voldemort",
+    role: "The Dark Lord",
+    house: "Slytherin",
+    image: voldemortImg,
+    quote: "There is no good and evil. There is only power.",
+    bio: "The most feared dark wizard in history who sought immortality at any cost.",
+    glow: "oklch(0.45 0.22 0)",
+  },
+  {
+    name: "Bellatrix Lestrange",
+    role: "Death Eater of Chaos",
+    house: "Slytherin",
+    image: bellatrixImg,
+    quote: "I killed Sirius Black.",
+    bio: "A dangerously loyal follower of Voldemort driven by madness and cruelty.",
+    glow: "oklch(0.58 0.24 330)",
+  },
+  {
+    name: "Sirius Black",
+    role: "The Escaped Prisoner of Azkaban",
+    house: "Gryffindor",
+    image: siriusImg,
+    quote: "We've all got both light and dark inside us.",
+    bio: "Harry's godfather, wrongly imprisoned and fiercely protective of those he loved.",
+    glow: "oklch(0.68 0.16 250)",
+  },
+  {
+    name: "Dobby",
+    role: "The Free House-Elf",
+    house: "None",
+    image: dobbyImg,
+    quote: "Dobby is free.",
+    bio: "A brave house-elf whose loyalty and sacrifice touched the wizarding world.",
+    glow: "oklch(0.80 0.10 90)",
+  },
+
+
+
 ];
 
 function CharactersPage() {
