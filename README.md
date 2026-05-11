@@ -122,7 +122,7 @@ npx wrangler deploy
 Add your screenshots here.
 
 ```md
-![Home Page](./screenshots/home.png)
+![image](https://github.com/user-attachments/...)
 ```
 
 ---
