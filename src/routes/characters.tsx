@@ -13,7 +13,7 @@ import hermioneImg from "@/assets/char-hermione.jpg";
 import ronImg from "@/assets/char-ron.jpg";
 import voldemortImg from "@/assets/char-voldemort.jpg";
 import bellatrixImg from "@/assets/char-belltrix.jpg";
-import siriusImg from "@/assets/char-sirius.jpg";
+import siriusImg from "@/assets/char-sirious.jpg";
 import dracoImg from "@/assets/char-draco.jpg";
 import dobbyImg from "@/assets/char-dobby.jpg";
 
