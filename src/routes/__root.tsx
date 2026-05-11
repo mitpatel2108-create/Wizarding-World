@@ -12,6 +12,8 @@ import appCss from "../styles.css?url";
 import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
 import { WandCursor } from "@/components/magic/WandCursor";
+import { MobileNav } from "@/components/MobileNav";    // ← add
+import { SoundToggle } from "@/components/SoundToggle"; // ← add
 
 function NotFoundComponent() {
   return (
@@ -111,6 +113,8 @@ function RootComponent() {
         <Outlet />
       </main>
       <SiteFooter />
+      <MobileNav />    {/* ← add */}
+      <SoundToggle />  {/* ← add */}
     </QueryClientProvider>
   );
 }

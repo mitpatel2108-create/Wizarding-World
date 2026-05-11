@@ -5,6 +5,7 @@ import { Particles } from "@/components/magic/Particles";
 import { RuneSeparator } from "@/components/magic/RuneSeparator";
 import { EngravedLink } from "@/components/magic/EngravedButton";
 import { HOUSES_BY_ID, type HouseId } from "@/data/houses";
+import { ShareHouseCard } from "@/components/ShareHouseCard";
 
 export const Route = createFileRoute("/profile")({
   head: () => ({
@@ -44,6 +45,14 @@ function ProfilePage() {
 
   const save = (next: Profile) => { setP(next); try { localStorage.setItem(KEY, JSON.stringify(next)); } catch {} };
   const house = p.house ? HOUSES_BY_ID[p.house] : null;
+
+// ADD THIS ↓
+const milestone =
+  p.xp >= 300 ? "Order Member" :
+  p.xp >= 220 ? "Head Student" :
+  p.xp >= 150 ? "Prefect" :
+  p.xp >= 80  ? "Third Year" :
+  p.xp >= 30  ? "First Year" : "Muggle-born";
 
   return (
     <section className="relative min-h-screen overflow-hidden pt-32 pb-24">
@@ -100,7 +109,7 @@ function ProfilePage() {
                 <Stat label="House" value={house?.name ?? "Unsorted"} link={house ? null : "/sorting-hat"} linkLabel="Be sorted" />
                 <Stat label="Wand" value={p.wand ?? "Unchosen"} link={p.wand ? null : "/wands"} linkLabel="Choose a wand" />
                 <Stat label="Patronus" value={p.patronus ?? "Unrevealed"} link={p.patronus ? null : "/patronus"} linkLabel="Cast Patronus" />
-                <Stat label="Magic Earned" value={`${p.xp} ✦`} />
+                <Stat label="Magic Earned" value={`${p.xp} ✦  — ${milestone}`} />
               </dl>
 
               {mounted && (
@@ -127,6 +136,8 @@ function ProfilePage() {
             </div>
           </div>
         </article>
+
+{p.house && <ShareHouseCard house={p.house} wizardName={p.name} />}  {/* ← ADD */}
 
         <div className="mt-12 flex flex-wrap justify-center gap-6">
           <EngravedLink to="/houses">Explore the Houses</EngravedLink>

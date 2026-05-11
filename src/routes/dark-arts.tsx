@@ -6,6 +6,7 @@ import { Fog } from "@/components/magic/Fog";
 import { RuneSeparator } from "@/components/magic/RuneSeparator";
 import { EngravedButton } from "@/components/magic/EngravedButton";
 
+
 export const Route = createFileRoute("/dark-arts")({
   head: () => ({
     meta: [

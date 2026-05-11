@@ -1,10 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Stars } from "@/components/magic/Stars";
 import { Particles } from "@/components/magic/Particles";
 import { RuneSeparator } from "@/components/magic/RuneSeparator";
 import { EngravedButton } from "@/components/magic/EngravedButton";
 import parchmentImg from "@/assets/parchment.jpg";
+import { useWizardProfile } from "@/hooks/useWizardProfile";
 
 export const Route = createFileRoute("/spells")({
   head: () => ({
@@ -42,6 +43,8 @@ function SpellsPage() {
   const [i, setI] = useState(0);
   const [turning, setTurning] = useState<"next" | "prev" | null>(null);
   const spell = SPELLS[i];
+  const { trackPageVisit } = useWizardProfile();                    // ← add
+  useEffect(() => { trackPageVisit("spells"); }, []);               // ← add
 
   const turn = (dir: "next" | "prev") => {
     if (turning) return;

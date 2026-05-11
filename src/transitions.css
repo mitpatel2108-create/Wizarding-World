@@ -1,0 +1,30 @@
+/* src/styles/transitions.css
+   Add @import "./transitions.css" to your main CSS / index.css file.
+   Uses the View Transitions API for cinematic page-to-page fades.
+   Fully backwards compatible — no-op on unsupported browsers.
+*/
+
+/* ── Default transition — fade dissolve ── */
+::view-transition-old(root) {
+  animation: 300ms ease-in both vt-fade-out;
+}
+::view-transition-new(root) {
+  animation: 400ms ease-out 200ms both vt-fade-in;
+}
+
+@keyframes vt-fade-out {
+  from { opacity: 1; filter: blur(0px); }
+  to   { opacity: 0; filter: blur(4px); }
+}
+@keyframes vt-fade-in {
+  from { opacity: 0; filter: blur(4px); transform: translateY(8px); }
+  to   { opacity: 1; filter: blur(0px); transform: translateY(0);   }
+}
+
+/* ── Reduced motion — respect the user ── */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}

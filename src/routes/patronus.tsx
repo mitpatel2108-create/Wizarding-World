@@ -5,6 +5,7 @@ import { Particles } from "@/components/magic/Particles";
 import { Fog } from "@/components/magic/Fog";
 import { RuneSeparator } from "@/components/magic/RuneSeparator";
 import { EngravedButton, EngravedLink } from "@/components/magic/EngravedButton";
+import { useWizardProfile } from "@/hooks/useWizardProfile";
 
 export const Route = createFileRoute("/patronus")({
   head: () => ({
@@ -32,6 +33,7 @@ function PatronusPage() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<{ animal: string; description: string; memory_hint: string } | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const { setPatronus } = useWizardProfile();
 
   const next = () => {
     if (text.trim().length < 3) return;
@@ -55,6 +57,7 @@ function PatronusPage() {
       }
       const data = await res.json();
       setResult(data);
+      setPatronus(data.animal);  // ← add this
       try {
         const raw = localStorage.getItem("wizarding-profile");
         const prof = raw ? JSON.parse(raw) : { name: "Wanderer", xp: 0 };

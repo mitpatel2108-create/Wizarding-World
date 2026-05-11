@@ -5,6 +5,7 @@ import { Particles } from "@/components/magic/Particles";
 import { RuneSeparator } from "@/components/magic/RuneSeparator";
 import { EngravedButton, EngravedLink } from "@/components/magic/EngravedButton";
 import { HOUSES_BY_ID, type HouseId } from "@/data/houses";
+import { useWizardProfile } from "@/hooks/useWizardProfile";
 
 export const Route = createFileRoute("/sorting-hat")({
   head: () => ({
@@ -35,6 +36,7 @@ function SortingHatPage() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<{ house: HouseId; verdict: string; trait: string } | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const { setHouse } = useWizardProfile();
 
   const choose = (opt: string) => {
     const next = [...answers, opt];
@@ -58,6 +60,7 @@ function SortingHatPage() {
       }
       const data = await res.json();
       setResult(data);
+      setHouse(data.house);
       try {
         const raw = localStorage.getItem("wizarding-profile");
         const prof = raw ? JSON.parse(raw) : { name: "Wanderer", xp: 0 };

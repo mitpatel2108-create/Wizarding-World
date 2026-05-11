@@ -5,6 +5,7 @@ import { Stars } from "@/components/magic/Stars";
 import { Fog } from "@/components/magic/Fog";
 import { RuneSeparator } from "@/components/magic/RuneSeparator";
 import wandShopUrl from "@/assets/wand-shop.jpg";
+import { useWizardProfile } from "@/hooks/useWizardProfile";
 
 export const Route = createFileRoute("/wands")({
   head: () => ({
@@ -37,6 +38,7 @@ const WANDS: Wand[] = [
 
 function WandsPage() {
   const [active, setActive] = useState<Wand>(WANDS[0]);
+  const { setWand } = useWizardProfile();  // ← add here
   return (
     <>
       <section className="relative h-[70svh] min-h-[480px] overflow-hidden pt-24">
@@ -79,7 +81,7 @@ function WandsPage() {
             </div>
             <div className="space-y-3">
               {WANDS.map((w) => (
-                <button key={w.name} onClick={() => setActive(w)} onMouseEnter={() => setActive(w)}
+                <button key={w.name} onClick={() => { setActive(w); setWand(`${w.name} · ${w.wood} · ${w.core}`); }} onMouseEnter={() => setActive(w)}
                   className={`group flex w-full items-start gap-5 border px-5 py-5 text-left transition-all ${
                     active.name === w.name ? "border-[var(--gold)] bg-[var(--gold)]/5 shadow-arcane" : "border-[var(--gold)]/20 hover:border-[var(--gold)]/60"
                   }`}>
