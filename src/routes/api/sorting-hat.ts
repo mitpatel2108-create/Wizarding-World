@@ -19,11 +19,11 @@ export const Route = createFileRoute("/api/sorting-hat")({
 
           const summary = parsed.data.answers.map((x) => `Q: ${x.q}\nA: ${x.a}`).join("\n\n");
 
-          const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+          const res = await fetch("https://api.openai.com/v1/chat/completions", {
             method: "POST",
             headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
             body: JSON.stringify({
-              model: "google/gemini-2.0-flash-001",
+              model: "gpt-4.1-mini",
               messages: [
                 {
                   role: "system",
