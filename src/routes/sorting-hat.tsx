@@ -45,33 +45,89 @@ function SortingHatPage() {
     else submit(next);
   };
 
-  const submit = async (final: string[]) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await fetch("/api/sorting-hat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ answers: final.map((a, i) => ({ q: QUESTIONS[i].q, a })) }),
-      });
-      if (!res.ok) {
-        const j = await res.json().catch(() => ({}));
-        throw new Error(j.error || "The Hat is silent.");
+  const submit = (final: string[]) => {
+  setLoading(true);
+
+  setTimeout(() => {
+    const scores = {
+      gryffindor: 0,
+      slytherin: 0,
+      ravenclaw: 0,
+      hufflepuff: 0,
+    };
+
+    final.forEach((answer) => {
+
+      if (
+        answer.includes("growls") ||
+        answer.includes("Pick it up and try a spell") ||
+        answer.includes("A coward") ||
+        answer.includes("A battle waiting")
+      ) {
+        scores.gryffindor += 2;
       }
-      const data = await res.json();
-      setResult(data);
-      setHouse(data.house);
-      try {
-        const raw = localStorage.getItem("wizarding-profile");
-        const prof = raw ? JSON.parse(raw) : { name: "Wanderer", xp: 0 };
-        localStorage.setItem("wizarding-profile", JSON.stringify({ ...prof, house: data.house, xp: (prof.xp || 0) + 25 }));
-      } catch {}
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Unknown error");
-    } finally {
-      setLoading(false);
-    }
-  };
+
+      if (
+        answer.includes("riddles") ||
+        answer.includes("Examine the wood and core") ||
+        answer.includes("An answer to every question") ||
+        answer.includes("A library with no end")
+      ) {
+        scores.ravenclaw += 2;
+      }
+
+      if (
+        answer.includes("child is crying") ||
+        answer.includes("Search for the owner") ||
+        answer.includes("A bully") ||
+        answer.includes("A long table of warm food")
+      ) {
+        scores.hufflepuff += 2;
+      }
+
+      if (
+        answer.includes("power no one else could touch") ||
+        answer.includes("I rewrite the rule") ||
+        answer.includes("A liar") ||
+        answer.includes("mirror that does not show you")
+      ) {
+        scores.slytherin += 2;
+      }
+    });
+
+    const winner = Object.entries(scores)
+      .sort((a, b) => b[1] - a[1])[0][0] as HouseId;
+
+    const verdicts = {
+      gryffindor: {
+        verdict: "Ah... courage, nerve, and daring burn brightly within you.",
+        trait: "Bravery",
+      },
+      ravenclaw: {
+        verdict: "A mind hungry for wisdom and wonder... most intriguing.",
+        trait: "Intelligence",
+      },
+      hufflepuff: {
+        verdict: "Loyal heart, steady soul... Hufflepuff shall be your home.",
+        trait: "Loyalty",
+      },
+      slytherin: {
+        verdict: "Ambition and cunning whisper strongly through your spirit.",
+        trait: "Ambition",
+      },
+    };
+
+    setResult({
+      house: winner,
+      verdict: verdicts[winner].verdict,
+      trait: verdicts[winner].trait,
+    });
+
+    setHouse(winner);
+
+    setLoading(false);
+  }, 1500);
+};
 
   const reset = () => { setStep(0); setAnswers([]); setResult(null); setError(null); };
   const house = result ? HOUSES_BY_ID[result.house] : null;
