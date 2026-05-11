@@ -23,7 +23,7 @@ export const Route = createFileRoute("/api/sorting-hat")({
             method: "POST",
             headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
             body: JSON.stringify({
-              model: "google/gemini-3-flash-preview",
+              model: "google/gemini-2.0-flash-001",
               messages: [
                 {
                   role: "system",
@@ -65,7 +65,18 @@ export const Route = createFileRoute("/api/sorting-hat")({
 
           const data = await res.json();
           const call = data?.choices?.[0]?.message?.tool_calls?.[0];
-          const args = call?.function?.arguments ? JSON.parse(call.function.arguments) : null;
+          let args = null;
+
+try {
+  args = call?.function?.arguments
+    ? JSON.parse(call.function.arguments)
+    : null;
+} catch {
+  return Response.json(
+    { error: "The Hat could not understand the prophecy." },
+    { status: 500 }
+  );
+}
           if (!args) return Response.json({ error: "Hat fell silent." }, { status: 500 });
           return Response.json(args);
         } catch (e) {
