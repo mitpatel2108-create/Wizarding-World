@@ -113,7 +113,9 @@ function MapPage() {
   <div className="rounded-full border border-[var(--gold)]/40 bg-black/40 px-4 py-2 backdrop-blur-md">
     <p className="font-display text-sm uppercase tracking-[0.3em] text-[var(--gold)]">
       Forbidden Forest
+
     </p>
+  </div>
   </div>
           {/* Footsteps (after reveal) */}  
           
