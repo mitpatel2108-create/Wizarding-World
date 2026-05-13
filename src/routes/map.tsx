@@ -101,8 +101,22 @@ function MapPage() {
               </text>
             </g>
           </svg>
+          <div className="absolute top-20 left-20 cursor-pointer hover:scale-110 transition duration-300">
+  <div className="rounded-full border border-[var(--gold)]/40 bg-black/40 px-4 py-2 backdrop-blur-md">
+    <p className="font-display text-sm uppercase tracking-[0.3em] text-[var(--gold)]">
+      Great Hall
+    </p>
+  </div>
+</div>
 
-          {/* Footsteps (after reveal) */}
+<div className="absolute bottom-20 right-20 cursor-pointer hover:scale-110 transition duration-300">
+  <div className="rounded-full border border-[var(--gold)]/40 bg-black/40 px-4 py-2 backdrop-blur-md">
+    <p className="font-display text-sm uppercase tracking-[0.3em] text-[var(--gold)]">
+      Forbidden Forest
+    </p>
+  </div>
+          {/* Footsteps (after reveal) */}  
+          
           {revealed && FOOTSTEPS.map((f) => {
             const dx = Math.sin((drift + f.id) * 1.3) * 1.2;
             const dy = Math.cos((drift + f.id) * 0.9) * 1.2;

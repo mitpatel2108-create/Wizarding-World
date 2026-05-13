@@ -204,26 +204,58 @@ function SortingHatPage() {
         )}
 
         {result && house && (
-          <div className="relative mt-8">
-            <div className="absolute inset-0 -z-10"
-              style={{ background: `radial-gradient(ellipse at center, ${house.glow}33 0%, transparent 60%)`, filter: "blur(20px)" }} />
-            <p className="font-display text-[10px] uppercase tracking-[0.5em]" style={{ color: house.glow }}>The Hat has spoken</p>
-            <h2 className="mt-4 font-display text-7xl md:text-8xl"
-                style={{ color: house.text, textShadow: `0 0 40px ${house.glow}` }}>
-              {house.name.toUpperCase()}
-            </h2>
-            <p className="mx-auto mt-8 max-w-2xl font-serif-magical text-xl italic text-[oklch(0.90_0.04_85)]">
-              "{result.verdict}"
-            </p>
-            <p className="mt-4 font-display text-[10px] uppercase tracking-[0.4em]" style={{ color: house.glow }}>
-              The Hat noticed: {result.trait}
-            </p>
-            <div className="mt-12 flex flex-wrap justify-center gap-4">
-              <EngravedLink to="/profile">View Your Ledger</EngravedLink>
-              <EngravedButton onClick={reset}>Sit Again</EngravedButton>
-            </div>
-          </div>
-        )}
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95">
+    
+    <div
+      className="absolute inset-0 opacity-30"
+      style={{
+        background: `radial-gradient(circle at center, ${house.glow}55 0%, transparent 70%)`,
+        filter: "blur(80px)",
+      }}
+    />
+
+    <div className="relative text-center animate-in fade-in zoom-in duration-1000 px-6">
+      
+      <p
+        className="font-display text-[10px] uppercase tracking-[0.6em] mb-6"
+        style={{ color: house.glow }}
+      >
+        THE HAT HAS SPOKEN
+      </p>
+
+      <h1
+        className="text-7xl md:text-9xl font-display mb-8"
+        style={{
+          color: house.text,
+          textShadow: `0 0 50px ${house.glow}`,
+        }}
+      >
+        {house.name.toUpperCase()}
+      </h1>
+
+      <p className="max-w-2xl mx-auto text-xl md:text-2xl italic font-serif-magical text-zinc-200 leading-relaxed">
+        "{result.verdict}"
+      </p>
+
+      <p
+        className="mt-8 font-display text-[10px] uppercase tracking-[0.5em]"
+        style={{ color: house.glow }}
+      >
+        Trait Recognized: {result.trait}
+      </p>
+
+      <div className="mt-14 flex flex-wrap justify-center gap-4">
+        <EngravedLink to="/profile">
+          View Your Ledger
+        </EngravedLink>
+
+        <EngravedButton onClick={reset}>
+          Sit Again
+        </EngravedButton>
+      </div>
+    </div>
+  </div>
+)}
       </div>
     </section>
   );

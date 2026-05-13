@@ -153,7 +153,7 @@ function PortraitCard({ character }: { character: Character }) {
   const [open, setOpen] = useState(false);
   return (
     <article onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}
-      className="group relative aspect-[3/4] overflow-hidden border-[1.5px] border-[var(--gold)]/40 transition-all duration-500"
+      className="group relative aspect-[3/4] overflow-hidden border-[1.5px] border-[var(--gold)]/40 transition-all duration-500 hover:scale-105 hover:shadow-[0_0_40px_rgba(255,215,0,0.4)]"
       style={{
         boxShadow: open
           ? `0 30px 90px -20px ${character.glow}, inset 0 0 60px ${character.glow}33`

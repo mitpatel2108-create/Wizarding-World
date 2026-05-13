@@ -51,10 +51,18 @@ function Hero() {
           The Wizarding<br/>World Awaits
         </h1>
         <p className="mx-auto mt-8 max-w-xl font-serif-magical text-lg text-[oklch(0.85_0.03_75)]/80 md:text-xl">
-          Wander candle-lit corridors. Whisper ancient incantations.
+          Wander candle-lit corridors. Whisper ancient incantations.         
           Find the house that has waited centuries for your name.
         </p>
+        <div className="absolute inset-0 bg-black/40 z-10" />
 
+        <div className="absolute top-20 left-20 animate-pulse text-gold text-6xl opacity-30">
+          ✦
+        </div>
+
+        <div className="absolute bottom-20 right-20 animate-bounce text-gold text-5xl opacity-20">
+          ⚡
+        </div>
         <div className="mt-12 flex flex-col items-center gap-6 sm:flex-row">
           <EngravedLink to="/hogwarts">Enter the Castle</EngravedLink>
           <EngravedLink to="/sorting-hat">Be Sorted</EngravedLink>

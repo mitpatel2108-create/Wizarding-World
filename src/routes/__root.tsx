@@ -8,12 +8,18 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 
+
 import appCss from "../styles.css?url";
 import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
 import { WandCursor } from "@/components/magic/WandCursor";
 import { MobileNav } from "@/components/MobileNav";    // ← add
 import { SoundToggle } from "@/components/SoundToggle"; // ← add
+
+import { Particles } from '@/components/magic/Particles'
+import { Fog } from '@/components/magic/Fog'
+import { Stars } from '@/components/magic/Stars'
+import SpellCasting from '../components/magic/SpellCasting'
 
 function NotFoundComponent() {
   return (
@@ -110,6 +116,12 @@ function RootComponent() {
       <WandCursor />
       <SiteNav />
       <main className="relative">
+        <Particles />
+        <Fog />
+        <Stars />
+        <WandCursor />
+        <SpellCasting />
+
         <Outlet />
       </main>
       <SiteFooter />

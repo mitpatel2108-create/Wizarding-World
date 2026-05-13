@@ -6,6 +6,7 @@ import { Fog } from "@/components/magic/Fog";
 import { RuneSeparator } from "@/components/magic/RuneSeparator";
 import wandShopUrl from "@/assets/wand-shop.jpg";
 import { useWizardProfile } from "@/hooks/useWizardProfile";
+import WandGenerator from '@/components/magic/WandGenerator'
 
 export const Route = createFileRoute("/wands")({
   head: () => ({
@@ -62,6 +63,7 @@ function WandsPage() {
             <p className="font-display text-xs uppercase tracking-[0.4em] text-[var(--gold)]/70">The Collection</p>
             <h2 className="mt-4 font-display text-4xl text-gold md:text-5xl">Legendary Wands</h2>
             <RuneSeparator className="mx-auto my-10 max-w-md" />
+            <WandGenerator />
           </div>
           <div className="grid gap-12 lg:grid-cols-[1.1fr_1.4fr]">
             <div className="relative aspect-square overflow-hidden border border-[var(--gold)]/30"

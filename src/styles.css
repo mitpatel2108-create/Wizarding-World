@@ -202,3 +202,47 @@
     repeating-linear-gradient(45deg, oklch(0.78 0.06 70 / 0.15) 0 2px, transparent 2px 6px);
   color: var(--ink);
 }
+.floating {
+  animation: floating 4s ease-in-out infinite;
+}
+
+@keyframes floating {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-12px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+body {
+  background: #07090f;
+  overflow-x: hidden;
+}
+
+.magic-glow {
+  box-shadow: 0 0 40px rgba(255, 215, 0, 0.4);
+}
+
+.floating {
+  animation: floating 4s ease-in-out infinite;
+}
+
+@keyframes floating {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}

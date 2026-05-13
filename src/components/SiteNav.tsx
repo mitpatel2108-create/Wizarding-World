@@ -5,6 +5,8 @@ const NAV = [
   { to: "/", label: "Home" },
   { to: "/hogwarts", label: "Hogwarts" },
   { to: "/houses", label: "Houses" },
+  { to: "/sorting-hat", label: "Sorting Hat" },
+  { to: "/patronus", label: "Patronus" },
   { to: "/spells", label: "Spells" },
   { to: "/potions", label: "Potions" },
   { to: "/characters", label: "Characters" },
