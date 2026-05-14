@@ -206,7 +206,7 @@ function PortraitCard({ character }: { character: Character }) {
         src={character.image}
         alt={character.name}
         loading="lazy"
-        decoding="async"
+        
         className="absolute inset-0 h-full w-full object-cover transition-all duration-1000"
         style={{
           transform: open ? "scale(1.06)" : "scale(1)",
