@@ -16,9 +16,11 @@ import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as PotionsRouteImport } from './routes/potions'
 import { Route as PatronusRouteImport } from './routes/patronus'
 import { Route as MapRouteImport } from './routes/map'
+import { Route as JournalRouteImport } from './routes/journal'
 import { Route as HousesRouteImport } from './routes/houses'
 import { Route as HogwartsRouteImport } from './routes/hogwarts'
 import { Route as DarkArtsRouteImport } from './routes/dark-arts'
+import { Route as DailyRouteImport } from './routes/daily'
 import { Route as ChatRouteImport } from './routes/chat'
 import { Route as CharactersRouteImport } from './routes/characters'
 import { Route as IndexRouteImport } from './routes/index'
@@ -61,6 +63,11 @@ const MapRoute = MapRouteImport.update({
   path: '/map',
   getParentRoute: () => rootRouteImport,
 } as any)
+const JournalRoute = JournalRouteImport.update({
+  id: '/journal',
+  path: '/journal',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HousesRoute = HousesRouteImport.update({
   id: '/houses',
   path: '/houses',
@@ -74,6 +81,11 @@ const HogwartsRoute = HogwartsRouteImport.update({
 const DarkArtsRoute = DarkArtsRouteImport.update({
   id: '/dark-arts',
   path: '/dark-arts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DailyRoute = DailyRouteImport.update({
+  id: '/daily',
+  path: '/daily',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ChatRoute = ChatRouteImport.update({
@@ -111,9 +123,11 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/characters': typeof CharactersRoute
   '/chat': typeof ChatRoute
+  '/daily': typeof DailyRoute
   '/dark-arts': typeof DarkArtsRoute
   '/hogwarts': typeof HogwartsRoute
   '/houses': typeof HousesRoute
+  '/journal': typeof JournalRoute
   '/map': typeof MapRoute
   '/patronus': typeof PatronusRoute
   '/potions': typeof PotionsRoute
@@ -129,9 +143,11 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/characters': typeof CharactersRoute
   '/chat': typeof ChatRoute
+  '/daily': typeof DailyRoute
   '/dark-arts': typeof DarkArtsRoute
   '/hogwarts': typeof HogwartsRoute
   '/houses': typeof HousesRoute
+  '/journal': typeof JournalRoute
   '/map': typeof MapRoute
   '/patronus': typeof PatronusRoute
   '/potions': typeof PotionsRoute
@@ -148,9 +164,11 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/characters': typeof CharactersRoute
   '/chat': typeof ChatRoute
+  '/daily': typeof DailyRoute
   '/dark-arts': typeof DarkArtsRoute
   '/hogwarts': typeof HogwartsRoute
   '/houses': typeof HousesRoute
+  '/journal': typeof JournalRoute
   '/map': typeof MapRoute
   '/patronus': typeof PatronusRoute
   '/potions': typeof PotionsRoute
@@ -168,9 +186,11 @@ export interface FileRouteTypes {
     | '/'
     | '/characters'
     | '/chat'
+    | '/daily'
     | '/dark-arts'
     | '/hogwarts'
     | '/houses'
+    | '/journal'
     | '/map'
     | '/patronus'
     | '/potions'
@@ -186,9 +206,11 @@ export interface FileRouteTypes {
     | '/'
     | '/characters'
     | '/chat'
+    | '/daily'
     | '/dark-arts'
     | '/hogwarts'
     | '/houses'
+    | '/journal'
     | '/map'
     | '/patronus'
     | '/potions'
@@ -204,9 +226,11 @@ export interface FileRouteTypes {
     | '/'
     | '/characters'
     | '/chat'
+    | '/daily'
     | '/dark-arts'
     | '/hogwarts'
     | '/houses'
+    | '/journal'
     | '/map'
     | '/patronus'
     | '/potions'
@@ -223,9 +247,11 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CharactersRoute: typeof CharactersRoute
   ChatRoute: typeof ChatRoute
+  DailyRoute: typeof DailyRoute
   DarkArtsRoute: typeof DarkArtsRoute
   HogwartsRoute: typeof HogwartsRoute
   HousesRoute: typeof HousesRoute
+  JournalRoute: typeof JournalRoute
   MapRoute: typeof MapRoute
   PatronusRoute: typeof PatronusRoute
   PotionsRoute: typeof PotionsRoute
@@ -289,6 +315,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MapRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/journal': {
+      id: '/journal'
+      path: '/journal'
+      fullPath: '/journal'
+      preLoaderRoute: typeof JournalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/houses': {
       id: '/houses'
       path: '/houses'
@@ -308,6 +341,13 @@ declare module '@tanstack/react-router' {
       path: '/dark-arts'
       fullPath: '/dark-arts'
       preLoaderRoute: typeof DarkArtsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/daily': {
+      id: '/daily'
+      path: '/daily'
+      fullPath: '/daily'
+      preLoaderRoute: typeof DailyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/chat': {
@@ -359,9 +399,11 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CharactersRoute: CharactersRoute,
   ChatRoute: ChatRoute,
+  DailyRoute: DailyRoute,
   DarkArtsRoute: DarkArtsRoute,
   HogwartsRoute: HogwartsRoute,
   HousesRoute: HousesRoute,
+  JournalRoute: JournalRoute,
   MapRoute: MapRoute,
   PatronusRoute: PatronusRoute,
   PotionsRoute: PotionsRoute,

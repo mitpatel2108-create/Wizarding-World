@@ -113,7 +113,6 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
     <QueryClientProvider client={queryClient}>
-      <WandCursor />
       <SiteNav />
       <main className="relative">
         <Particles />

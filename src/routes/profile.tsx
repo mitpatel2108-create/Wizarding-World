@@ -30,7 +30,7 @@ interface Profile {
   xp: number;
 }
 
-const KEY = "wizarding-profile";
+const KEY = "wizarding-world-profile";
 
 function loadProfile(): Profile {
   if (typeof window === "undefined")
@@ -144,7 +144,6 @@ function ProfilePage() {
                 onChange={(e) => save({ ...p, name: e.target.value })}
                 className="mt-2 w-full bg-transparent border-b border-[var(--gold)]/30 pb-2 font-display text-3xl text-[var(--gold)] outline-none focus:border-[var(--gold)]"
               />
-
               <dl className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <Stat
                   label="House"
@@ -166,16 +165,79 @@ function ProfilePage() {
                 />
                 <Stat label="Magic Earned" value={`${p.xp} ✦  — ${milestone}`} />
               </dl>
-              <div className="grid gap-6 mt-10">
-                <div className="border border-yellow-700 p-6 rounded-xl bg-black/50">
-                  <h2 className="text-2xl text-yellow-400">Wizard Level</h2>
-                  <p>Level 12</p>
-                </div>
-
-                <div className="border border-yellow-700 p-6 rounded-xl bg-black/50">
-                  <h2 className="text-2xl text-yellow-400">Achievements</h2>
-                  <p>Master Spellcaster</p>
-                </div>
+              <div className="mt-6">
+                {(() => {
+                  const levels = [0, 30, 80, 150, 220, 300];
+                  const labels = [
+                    "Muggle-born",
+                    "First Year",
+                    "Third Year",
+                    "Prefect",
+                    "Head Student",
+                    "Order Member",
+                  ];
+                  const lvl = [...levels].reverse().findIndex((l) => p.xp >= l);
+                  const realLvl = levels.length - 1 - lvl;
+                  const curr = levels[realLvl];
+                  const next = levels[realLvl + 1] ?? curr;
+                  const pct =
+                    realLvl >= levels.length - 1
+                      ? 100
+                      : Math.round(((p.xp - curr) / (next - curr)) * 100);
+                  return (
+                    <div>
+                      <div className="flex justify-between font-display text-[9px] uppercase tracking-[0.3em] text-[var(--gold)]/60 mb-2">
+                        <span>{labels[realLvl]}</span>
+                        <span>
+                          {realLvl < labels.length - 1 ? labels[realLvl + 1] : "Max Rank"}
+                        </span>
+                      </div>
+                      <div
+                        className="h-1.5 w-full rounded-full overflow-hidden"
+                        style={{ background: "color-mix(in oklab, var(--gold) 12%, transparent)" }}
+                      >
+                        <div
+                          className="h-full rounded-full transition-all duration-1000 ease-out"
+                          style={{
+                            width: `${pct}%`,
+                            background: "linear-gradient(90deg, var(--gold-soft), var(--gold))",
+                            boxShadow: "0 0 12px rgba(255,200,90,0.5)",
+                          }}
+                        />
+                      </div>
+                      <p className="mt-1.5 font-display text-[9px] uppercase tracking-[0.3em] text-[var(--gold)]/40">
+                        {p.xp} ✦ — {pct}% to next rank
+                      </p>
+                    </div>
+                  );
+                })()}
+              </div>
+              // REPLACE lines 169–179 with:
+              <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                {[
+                  { label: "Spell Pages Turned", value: `${Math.floor(p.xp / 5)}`, icon: "✦" },
+                  {
+                    label: "Days in the Castle",
+                    value: p.xp >= 10 ? `${Math.max(1, Math.floor(p.xp / 10))}` : "0",
+                    icon: "🕯️",
+                  },
+                  { label: "Rank", value: milestone, icon: "⚡" },
+                  { label: "Magic Total", value: `${p.xp} ✦`, icon: "✺" },
+                ].map((stat) => (
+                  <div
+                    key={stat.label}
+                    className="border border-[var(--gold)]/20 p-4 text-center"
+                    style={{ background: "oklch(0.06 0.02 260 / 0.5)" }}
+                  >
+                    <span className="block text-2xl">{stat.icon}</span>
+                    <span className="mt-1 block font-display text-lg text-[var(--gold)]">
+                      {stat.value}
+                    </span>
+                    <span className="font-display text-[9px] uppercase tracking-[0.3em] text-[var(--gold)]/50">
+                      {stat.label}
+                    </span>
+                  </div>
+                ))}
               </div>
               {mounted && (
                 <div className="mt-10">

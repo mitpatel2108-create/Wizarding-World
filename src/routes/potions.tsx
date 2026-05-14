@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState , useRef } from "react";
 import { Stars } from "@/components/magic/Stars";
 import { Particles } from "@/components/magic/Particles";
 import { Fog } from "@/components/magic/Fog";
@@ -179,6 +179,159 @@ function PotionsPage() {
           </div>
         </div>
       </div>
+      <BrewingGame />
     </section>
+  );
+}
+// ADD AT THE BOTTOM OF potions.tsx, after line 184:
+
+const BREW_STEPS = [
+  { id: "heat", label: "Heat the Cauldron", icon: "🔥", color: "oklch(0.70 0.20 35)" },
+  { id: "stir", label: "Stir Clockwise", icon: "🌀", color: "oklch(0.78 0.13 80)" },
+  { id: "add", label: "Add Core Ingredient", icon: "✦", color: "oklch(0.85 0.10 220)" },
+  { id: "wait", label: "Wait & Observe", icon: "⏳", color: "oklch(0.65 0.18 145)" },
+  { id: "seal", label: "Seal the Vial", icon: "🧪", color: "oklch(0.84 0.16 90)" },
+];
+
+function BrewingGame() {
+  const [shuffled, setShuffled] = useState(() =>
+    [...BREW_STEPS].sort(() => Math.random() - 0.5)
+  );
+  const [order, setOrder] = useState<string[]>([]);
+  const [result, setResult] = useState<"idle" | "success" | "fail">("idle");
+  const [dragging, setDragging] = useState<string | null>(null);
+  const [cauldronBubble, setCauldronBubble] = useState(false);
+  const dragOver = useRef<string | null>(null);
+
+  const reset = () => {
+    setShuffled([...BREW_STEPS].sort(() => Math.random() - 0.5));
+    setOrder([]);
+    setResult("idle");
+    setCauldronBubble(false);
+  };
+
+  const addStep = (id: string) => {
+    if (order.includes(id) || result !== "idle") return;
+    const newOrder = [...order, id];
+    setOrder(newOrder);
+    setCauldronBubble(true);
+    setTimeout(() => setCauldronBubble(false), 600);
+
+    if (newOrder.length === BREW_STEPS.length) {
+      const correct = BREW_STEPS.map((s) => s.id);
+      const isCorrect = newOrder.every((id, i) => id === correct[i]);
+      setResult(isCorrect ? "success" : "fail");
+    }
+  };
+
+  const removeStep = (id: string) => {
+    const idx = order.indexOf(id);
+    setOrder(order.slice(0, idx));
+    setResult("idle");
+  };
+
+  return (
+    <div className="mx-auto mt-16 max-w-3xl px-6">
+      <div className="border border-[var(--gold)]/20 p-8" style={{ background: "oklch(0.06 0.025 260 / 0.8)" }}>
+        <p className="font-display text-[10px] uppercase tracking-[0.5em] text-[var(--gold)]/60 text-center mb-2">
+          Brewing Challenge
+        </p>
+        <h2 className="font-display text-2xl text-gold text-center">Order the Steps</h2>
+        <p className="mt-2 font-serif-magical italic text-sm text-[var(--gold)]/50 text-center">
+          Tap the steps in the correct brewing order
+        </p>
+
+        {/* Cauldron visual */}
+        <div className="my-8 flex justify-center">
+          <svg
+            viewBox="0 0 120 90"
+            className="w-36 h-28 transition-all duration-300"
+            style={{ filter: cauldronBubble ? "drop-shadow(0 0 18px var(--gold))" : "none" }}
+          >
+            <ellipse cx="60" cy="30" rx="45" ry="10" fill="oklch(0.20 0.04 260)" stroke="var(--gold-soft)" strokeWidth="1" />
+            <path d="M15 30 Q12 75 60 78 Q108 75 105 30 Z" fill="oklch(0.12 0.04 260)" stroke="var(--gold-soft)" strokeWidth="1" />
+            {order.length > 0 && (
+              <ellipse
+                cx="60" cy="32" rx="40" ry="8"
+                fill={BREW_STEPS.find(s => s.id === order[order.length - 1])?.color ?? "var(--gold)"}
+                opacity="0.6"
+              />
+            )}
+            {cauldronBubble && (
+              <>
+                <circle cx="45" cy="22" r="4" fill={BREW_STEPS.find(s => s.id === order[order.length - 1])?.color ?? "var(--gold)"} opacity="0.8" />
+                <circle cx="70" cy="18" r="3" fill={BREW_STEPS.find(s => s.id === order[order.length - 1])?.color ?? "var(--gold)"} opacity="0.6" />
+              </>
+            )}
+            <line x1="10" y1="28" x2="10" y2="65" stroke="var(--gold-soft)" strokeWidth="3" strokeLinecap="round" />
+            <line x1="110" y1="28" x2="110" y2="65" stroke="var(--gold-soft)" strokeWidth="3" strokeLinecap="round" />
+          </svg>
+        </div>
+
+        {/* Available steps */}
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
+          {shuffled.map((step) => {
+            const added = order.includes(step.id);
+            return (
+              <button
+                key={step.id}
+                onClick={() => added ? removeStep(step.id) : addStep(step.id)}
+                className="flex flex-col items-center gap-2 border p-3 text-center transition-all duration-300"
+                style={{
+                  borderColor: added ? step.color : "color-mix(in oklab, var(--gold) 25%, transparent)",
+                  background: added ? `${step.color}22` : "transparent",
+                  opacity: added && order.indexOf(step.id) < order.length - 1 ? 0.4 : 1,
+                }}
+              >
+                <span className="text-2xl">{step.icon}</span>
+                <span className="font-display text-[9px] uppercase tracking-[0.2em]" style={{ color: added ? step.color : "var(--gold)" }}>
+                  {step.label}
+                </span>
+                {added && (
+                  <span className="font-display text-[8px] text-[var(--gold)]/50">
+                    Step {order.indexOf(step.id) + 1}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Progress */}
+        <div className="mt-6 flex items-center gap-2 justify-center">
+          {BREW_STEPS.map((_, i) => (
+            <div
+              key={i}
+              className="h-1 w-8 rounded-full transition-all duration-500"
+              style={{
+                background: i < order.length ? "var(--gold)" : "color-mix(in oklab, var(--gold) 15%, transparent)",
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Result */}
+        {result === "success" && (
+          <div className="mt-6 text-center">
+            <p className="font-display text-base uppercase tracking-[0.3em] text-[var(--gold)] animate-flicker">
+              ✦ Perfect Brew — The potion shimmers ✦
+            </p>
+            <button onClick={reset} className="mt-3 font-display text-[9px] uppercase tracking-[0.3em] text-[var(--gold)]/50 hover:text-[var(--gold)] transition-colors">
+              Brew Again
+            </button>
+          </div>
+        )}
+        {result === "fail" && (
+          <div className="mt-6 text-center">
+            <p className="font-serif-magical text-base italic text-[oklch(0.55_0.22_25)]">
+              The cauldron darkens. The order was wrong.
+            </p>
+            <button onClick={reset} className="mt-3 font-display text-[9px] uppercase tracking-[0.3em] text-[var(--gold)]/50 hover:text-[var(--gold)] transition-colors">
+              Try Again
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }

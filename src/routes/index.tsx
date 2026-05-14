@@ -6,7 +6,7 @@ import { Fog } from "@/components/magic/Fog";
 import { RuneSeparator } from "@/components/magic/RuneSeparator";
 import { EngravedLink } from "@/components/magic/EngravedButton";
 import spellbookUrl from "@/assets/spellbook.jpg";
-
+import { useInView } from "@/hooks/useInView";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -17,7 +17,10 @@ export const Route = createFileRoute("/")({
           "Step into a cinematic wizarding world. Explore an ancient castle, four legendary houses, spells, potions, wands and more.",
       },
       { property: "og:title", content: "Wizarding World — Enter the Magic" },
-      { property: "og:description", content: "A cinematic immersive journey into the wizarding world." },
+      {
+        property: "og:description",
+        content: "A cinematic immersive journey into the wizarding world.",
+      },
     ],
   }),
   component: Index,
@@ -42,23 +45,22 @@ function Hero() {
       <Stars count={140} />
       <Particles variant="ember" count={45} />
       <Fog />
-
+      <div className="absolute inset-0 bg-black/40 z-10" />
       <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center">
         <p className="font-serif-magical italic text-sm md:text-base text-[var(--gold)]/80 tracking-[0.4em] uppercase animate-flicker">
           The veil between worlds grows thin
         </p>
         <h1 className="mt-6 font-display text-[clamp(2.5rem,8vw,7.5rem)] leading-[0.95] text-gold drop-shadow-[0_0_40px_rgba(255,200,90,0.25)]">
-          The Wizarding<br/>World Awaits
+          The Wizarding
+          <br />
+          World Awaits
         </h1>
         <p className="mx-auto mt-8 max-w-xl font-serif-magical text-lg text-[oklch(0.85_0.03_75)]/80 md:text-xl">
-          Wander candle-lit corridors. Whisper ancient incantations.         
-          Find the house that has waited centuries for your name.
+          Wander candle-lit corridors. Whisper ancient incantations. Find the house that has waited
+          centuries for your name.
         </p>
-        <div className="absolute inset-0 bg-black/40 z-10" />
 
-        <div className="absolute top-20 left-20 animate-pulse text-gold text-6xl opacity-30">
-          ✦
-        </div>
+        <div className="absolute top-20 left-20 animate-pulse text-gold text-6xl opacity-30">✦</div>
 
         <div className="absolute bottom-20 right-20 animate-bounce text-gold text-5xl opacity-20">
           ⚡
@@ -69,7 +71,9 @@ function Hero() {
         </div>
 
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
-          <span className="font-display text-[10px] uppercase tracking-[0.5em] text-[var(--gold)]/70">Descend</span>
+          <span className="font-display text-[10px] uppercase tracking-[0.5em] text-[var(--gold)]/70">
+            Descend
+          </span>
           <span className="block h-12 w-px bg-gradient-to-b from-[var(--gold)]/80 to-transparent animate-flicker" />
         </div>
       </div>
@@ -137,46 +141,61 @@ function Pillars() {
     <section className="relative px-6 py-24">
       <div className="mx-auto max-w-7xl">
         <div className="mb-16 text-center">
-          <p className="font-display text-xs uppercase tracking-[0.4em] text-[var(--gold)]/70">Begin Your Journey</p>
+          <p className="font-display text-xs uppercase tracking-[0.4em] text-[var(--gold)]/70">
+            Begin Your Journey
+          </p>
           <h2 className="mt-4 font-display text-4xl text-gold md:text-6xl">Choose Your Path</h2>
         </div>
         <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-4">
-          {pillars.map((p) => (
-            <a
-              key={p.title}
-              href={p.to}
-              className="group relative block overflow-hidden border border-[var(--gold)]/25 transition-all duration-500 hover:border-[var(--gold)]/70 hover:-translate-y-2"
-              style={{ background: p.hue, boxShadow: "0 20px 60px -20px rgba(0,0,0,0.7)" }}
-            >
-              <div className="relative z-10 flex h-80 flex-col justify-between p-8">
-                <div className="flex justify-between">
-                  <span className="font-display text-[10px] uppercase tracking-[0.4em] text-[var(--gold)]/70">
-                    Chapter
-                  </span>
-                  <Rune />
-                </div>
-                <div>
-                  <h3 className="font-display text-2xl text-[var(--gold)] transition group-hover:text-[oklch(0.92_0.06_85)]">
-                    {p.title}
-                  </h3>
-                  <p className="mt-3 font-serif-magical text-base italic text-[oklch(0.85_0.04_75)]/80">
-                    {p.desc}
-                  </p>
-                  <div className="mt-6 flex items-center gap-3 font-display text-[11px] uppercase tracking-[0.3em] text-[var(--gold)]">
-                    <span className="h-px w-8 bg-[var(--gold)]/60 transition-all group-hover:w-16" />
-                    Enter
-                  </div>
-                </div>
-              </div>
+          // REPLACE lines 144–179 with this:
+          {pillars.map((p, i) => {
+            const { ref, inView } = useInView();
+            return (
               <div
-                className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100"
+                ref={ref}
+                key={p.title}
                 style={{
-                  background:
-                    "radial-gradient(circle at 50% 100%, rgba(255,200,90,0.18), transparent 60%)",
+                  opacity: inView ? 1 : 0,
+                  transform: inView ? "none" : "translateY(40px)",
+                  transition: `opacity 0.7s ease ${i * 0.15}s, transform 0.7s ease ${i * 0.15}s`,
                 }}
-              />
-            </a>
-          ))}
+              >
+                <a
+                  href={p.to}
+                  className="group relative block overflow-hidden border border-[var(--gold)]/25 transition-all duration-500 hover:border-[var(--gold)]/70 hover:-translate-y-3 hover:scale-[1.02] hover:shadow-[0_0_50px_rgba(255,200,90,0.18),0_30px_60px_-20px_rgba(0,0,0,0.9)]"
+                  style={{ background: p.hue, boxShadow: "0 20px 60px -20px rgba(0,0,0,0.7)" }}
+                >
+                  <div className="relative z-10 flex h-80 flex-col justify-between p-8">
+                    <div className="flex justify-between">
+                      <span className="font-display text-[10px] uppercase tracking-[0.4em] text-[var(--gold)]/70">
+                        Chapter
+                      </span>
+                      <Rune />
+                    </div>
+                    <div>
+                      <h3 className="font-display text-2xl text-[var(--gold)] transition group-hover:text-[oklch(0.92_0.06_85)]">
+                        {p.title}
+                      </h3>
+                      <p className="mt-3 font-serif-magical text-base italic text-[oklch(0.85_0.04_75)]/80">
+                        {p.desc}
+                      </p>
+                      <div className="mt-6 flex items-center gap-3 font-display text-[11px] uppercase tracking-[0.3em] text-[var(--gold)]">
+                        <span className="h-px w-8 bg-[var(--gold)]/60 transition-all group-hover:w-16" />
+                        Enter
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100"
+                    style={{
+                      background:
+                        "radial-gradient(circle at 50% 100%, rgba(255,200,90,0.18), transparent 60%)",
+                    }}
+                  />
+                </a>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -185,7 +204,12 @@ function Pillars() {
 
 function Rune() {
   return (
-    <svg width="20" height="20" viewBox="0 0 20 20" className="text-[var(--gold)]/70 animate-rune-pulse">
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      className="text-[var(--gold)]/70 animate-rune-pulse"
+    >
       <g fill="none" stroke="currentColor" strokeWidth="1">
         <circle cx="10" cy="10" r="8" />
         <path d="M10 2 L10 18 M2 10 L18 10" opacity="0.5" />
@@ -203,7 +227,9 @@ function Spellbook() {
         <div className="relative">
           <div
             className="absolute -inset-8 rounded-full opacity-40 blur-3xl"
-            style={{ background: "radial-gradient(circle, rgba(255,180,80,0.45), transparent 60%)" }}
+            style={{
+              background: "radial-gradient(circle, rgba(255,180,80,0.45), transparent 60%)",
+            }}
           />
           <img
             src={spellbookUrl}
@@ -215,13 +241,16 @@ function Spellbook() {
           />
         </div>
         <div>
-          <p className="font-display text-xs uppercase tracking-[0.4em] text-[var(--gold)]/70">Volume I</p>
-          <h2 className="mt-4 font-display text-4xl text-gold md:text-5xl">A Book That Reads You Back</h2>
+          <p className="font-display text-xs uppercase tracking-[0.4em] text-[var(--gold)]/70">
+            Volume I
+          </p>
+          <h2 className="mt-4 font-display text-4xl text-gold md:text-5xl">
+            A Book That Reads You Back
+          </h2>
           <RuneSeparator className="my-8" />
           <p className="font-serif-magical text-xl italic leading-relaxed text-[oklch(0.85_0.04_75)]/85">
-            Each page glows for a different hand. Hover the runes and they ripple
-            like water. Speak a word aloud — softly — and the candle leans
-            toward you to listen.
+            Each page glows for a different hand. Hover the runes and they ripple like water. Speak
+            a word aloud — softly — and the candle leans toward you to listen.
           </p>
           <div className="mt-10">
             <EngravedLink to="/spells">Open the Spellbook</EngravedLink>
@@ -246,7 +275,9 @@ function Invitation() {
           Your Letter Is Late
         </p>
         <h2 className="mt-6 font-display text-5xl leading-tight text-gold md:text-7xl">
-          But the owl<br/>still waits.
+          But the owl
+          <br />
+          still waits.
         </h2>
         <p className="mx-auto mt-8 max-w-xl font-serif-magical text-xl italic text-[oklch(0.85_0.04_75)]/80">
           Take the seat at the long oak table. The Hat already knows.

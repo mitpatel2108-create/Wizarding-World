@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Stars } from "@/components/magic/Stars";
 import { Particles } from "@/components/magic/Particles";
 import { RuneSeparator } from "@/components/magic/RuneSeparator";
@@ -149,6 +149,136 @@ function SpellsPage() {
           ))}
         </div>
       </div>
+      <SpellPractice currentSpellName={spell.name} currentSpellGlow={spell.glow} />
     </section>
+  );
+}
+// ADD THIS ENTIRE BLOCK at the bottom of spells.tsx, after line 154:
+
+interface SpellPracticeProps {
+  currentSpellName: string;
+  currentSpellGlow: string;
+}
+
+const SPELL_EFFECTS: Record<string, () => void> = {
+  lumos: () => (document.body.style.filter = "brightness(1.4) contrast(0.95)"),
+  nox: () => (document.body.style.filter = "brightness(1) contrast(1)"),
+  expelliarmus: () =>
+    document.body.animate(
+      [{ transform: "translateX(-14px)" }, { transform: "translateX(14px)" }, { transform: "translateX(0)" }],
+      { duration: 450, easing: "ease-out" }
+    ),
+  alohomora: () =>
+    document.body.animate(
+      [{ filter: "blur(0px)" }, { filter: "blur(3px)" }, { filter: "blur(0px)" }],
+      { duration: 700, easing: "ease-in-out" }
+    ),
+  accio: () => window.scrollTo({ top: 0, behavior: "smooth" }),
+  "wingardium leviosa": () => {
+    const els = document.querySelectorAll("h1, h2");
+    els.forEach((el) => {
+      (el as HTMLElement).animate(
+        [{ transform: "translateY(0)" }, { transform: "translateY(-14px)" }, { transform: "translateY(0)" }],
+        { duration: 900, easing: "ease-in-out" }
+      );
+    });
+  },
+  "expecto patronum": () => {
+    document.body.animate(
+      [{ filter: "brightness(1)" }, { filter: "brightness(1.8) saturate(0.3)" }, { filter: "brightness(1)" }],
+      { duration: 1200, easing: "ease-in-out" }
+    );
+  },
+  "avada kedavra": () => {
+    document.body.animate(
+      [{ filter: "hue-rotate(0deg)" }, { filter: "hue-rotate(120deg) brightness(0.6)" }, { filter: "hue-rotate(0deg)" }],
+      { duration: 800, easing: "ease-in-out" }
+    );
+  },
+};
+
+function SpellPractice({ currentSpellName, currentSpellGlow }: SpellPracticeProps) {
+  const [value, setValue] = useState("");
+  const [result, setResult] = useState<"correct" | "unknown" | null>(null);
+  const [hint, setHint] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const cast = useCallback(() => {
+    const typed = value.toLowerCase().trim();
+    if (!typed) return;
+    const fn = SPELL_EFFECTS[typed];
+    if (fn) {
+      fn();
+      setResult("correct");
+      // reset body filter for lumos after 2.5s
+      if (typed === "lumos") setTimeout(() => (document.body.style.filter = ""), 2500);
+    } else {
+      setResult("unknown");
+    }
+    setValue("");
+    setTimeout(() => setResult(null), 2200);
+  }, [value]);
+
+  return (
+    <div className="mx-auto mt-16 max-w-2xl px-6 text-center">
+      <div className="border border-[var(--gold)]/20 p-8" style={{ background: "oklch(0.06 0.025 260 / 0.7)" }}>
+        <p className="font-display text-[10px] uppercase tracking-[0.5em] text-[var(--gold)]/60">
+          Cast a Spell
+        </p>
+        <p className="mt-2 font-serif-magical text-sm italic text-[var(--gold)]/50">
+          Type any incantation and press Enter
+        </p>
+
+        <div className="mt-6 flex items-center gap-4 justify-center">
+          <input
+            ref={inputRef}
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && cast()}
+            placeholder="e.g. Lumos..."
+            className="w-56 bg-transparent border-b border-[var(--gold)]/30 pb-2 text-center font-serif-magical text-xl italic text-[var(--gold)] outline-none focus:border-[var(--gold)] placeholder:text-[var(--gold)]/25 transition-colors duration-300"
+          />
+          <button
+            onClick={cast}
+            className="border border-[var(--gold)]/40 px-5 py-2 font-display text-[10px] uppercase tracking-[0.3em] text-[var(--gold)] hover:bg-[var(--gold)]/10 transition-all duration-300"
+          >
+            Cast ✦
+          </button>
+        </div>
+
+        {/* Result feedback */}
+        {result === "correct" && (
+          <p
+            className="mt-4 font-display text-base uppercase tracking-[0.3em] animate-flicker"
+            style={{ color: currentSpellGlow }}
+          >
+            ✦ Spell cast successfully ✦
+          </p>
+        )}
+        {result === "unknown" && (
+          <p className="mt-4 font-serif-magical text-base italic text-[oklch(0.55_0.22_25)]">
+            No such incantation is recorded here.
+          </p>
+        )}
+
+        {/* Hint toggle */}
+        <button
+          onClick={() => setHint((h) => !h)}
+          className="mt-4 font-display text-[9px] uppercase tracking-[0.3em] text-[var(--gold)]/40 hover:text-[var(--gold)]/70 transition-colors"
+        >
+          {hint ? "Hide hint" : "Show hint"}
+        </button>
+        {hint && (
+          <p className="mt-2 font-serif-magical italic text-sm text-[var(--gold)]/60">
+            Try: Lumos · Nox · Expelliarmus · Alohomora · Accio · Wingardium Leviosa · Expecto Patronum · Avada Kedavra
+          </p>
+        )}
+
+        {/* Current spell tip */}
+        <p className="mt-5 font-display text-[9px] uppercase tracking-[0.3em] text-[var(--gold)]/30">
+          Currently reading: {currentSpellName}
+        </p>
+      </div>
+    </div>
   );
 }
