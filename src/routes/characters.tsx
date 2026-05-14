@@ -202,10 +202,7 @@ function PortraitCard({ character }: { character: Character }) {
       }}
     >
       <div className="absolute inset-2 z-10 pointer-events-none border border-[var(--gold)]/30" />
-      <img
-        src={character.image}
-        alt={character.name}
-        loading="lazy"
+      <img src={character.image} alt={character.name} loading="lazy"
         
         className="absolute inset-0 h-full w-full object-cover transition-all duration-1000"
         style={{
